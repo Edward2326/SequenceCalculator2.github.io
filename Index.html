@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequence Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #calculator {
+            background-color: #F1B4BB;
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        button {
+            width: 48%;
+            padding: 15px;
+            box-sizing: border-box;
+            margin: 2% 1%;
+            font-size: 16px;
+            background-color:  #FDE5EC;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+
+        #result {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        #sequence {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="calculator">
+        <label for="topic">Choose a sequence:</label>
+        <select id="topic">
+            <option value="fibonacci">Fibonacci</option>
+            <option value="tribonacci">Tribonacci</option>
+            <option value="binets">Binet's Sequence</option>
+            <option value="lucas">Lucas Sequence</option>
+        </select>
+
+        <label for="number">Enter the number:</label>
+        <input type="number" id="number">
+        
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="resetForm()">Reset</button>
+
+        <div id="result"></div>
+        <div id="sequence"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            var topic = document.getElementById("topic").value;
+            var number = parseInt(document.getElementById("number").value);
+            var resultDiv = document.getElementById("result");
+            var sequenceDiv = document.getElementById("sequence");
+
+            // Clear previous content
+            resultDiv.innerHTML = "";
+            sequenceDiv.innerHTML = "";
+
+            // Calculate the selected sequence
+            var sequence = [];
+            var result;
+            switch (topic) {
+                case "fibonacci":
+                    for (let i = 0; i <= number; i++) {
+                        sequence.push(fibonacci(i));
+                    }
+                    result = fibonacci(number);
+                    break;
+                case "tribonacci":
+                    for (let i = 0; i <= number; i++) {
+                        sequence.push(tribonacci(i));
+                    }
+                    result = tribonacci(number);
+                    break;
+                case "binets":
+                    for (let i = 0; i <= number; i++) {
+                        sequence.push(binetsFormula(i));
+                    }
+                    result = binetsFormula(number);
+                    break;
+                case "lucas":
+                    for (let i = 0; i <= number; i++) {
+                        sequence.push(lucas(i));
+                    }
+                    result = lucas(number);
+                    break;
+                default:
+                    result = "Invalid selection";
+            }
+
+            // Display the result
+            resultDiv.textContent = topic.charAt(0).toUpperCase() + topic.slice(1) + "(" + number + "): " + result;
+
+            // Display the sequence
+            sequenceDiv.textContent = "Sequence up to " + number + ": " + sequence.join(', ');
+        }
+
+        function resetForm() {
+            document.getElementById("topic").value = "";
+            document.getElementById("number").value = "";
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("sequence").innerHTML = "";
+        }
+
+        function fibonacci(n) {
+            if (n <= 1) {
+                return n;
+            } else {
+                return fibonacci(n - 1) + fibonacci(n - 2);
+            }
+        }
+
+        function tribonacci(n) {
+            if (n == 0) {
+                return 0;
+            } else if (n == 1 || n == 2) {
+                return 1;
+            } else {
+                return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3);
+            }
+        }
+
+        function lucas(n) {
+            if (n == 0) {
+                return 2;
+            } else if (n == 1) {
+                return 1;
+            } else {
+                return lucas(n - 1) + lucas(n - 2);
+            }
+        }
+
+        function binetsFormula(n) {
+            var sqrt5 = Math.sqrt(5);
+            var phi = (1 + sqrt5) / 2;
+            var psi = (1 - sqrt5) / 2;
+
+            return (Math.pow(phi, n) - Math.pow(psi, n)) / sqrt5;
+        }
+    </script>
+
+</body>
+</html>
